@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { DEFAULT_SYSTEM_PROMPT } from './constants';
 
 export class ConfigService {
     private config: vscode.WorkspaceConfiguration;
@@ -53,8 +54,8 @@ export class ConfigService {
     /**
      * Obtiene el prompt personalizado
      */
-    public getCustomPrompt(): string {
-        return this.config.get<string>('customPrompt') || '';
+    public getCustomSystemPrompt(): string {
+        return this.config.get<string>('customSystemPrompt') || DEFAULT_SYSTEM_PROMPT;
     }
 
     /**
@@ -93,7 +94,7 @@ export class ConfigService {
      * Actualiza el prompt personalizado
      */
     public async updateCustomPrompt(prompt: string): Promise<void> {
-        await this.config.update('customPrompt', prompt, true);
+        await this.config.update('customSystemPrompt', prompt, true);
         this.refreshConfig();
     }
 } 
