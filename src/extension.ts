@@ -1,26 +1,53 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { CommitService } from './services/commitService';
+import { ConfigService } from './services/configService';
+import { LogService } from './services/logService';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	const logService = LogService.getInstance();
+	logService.info('Conventional Commit AI is now active!');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "conventiona-commit-ai" is now active!');
+	const commitService = CommitService.getInstance();
+	const configService = ConfigService.getInstance();
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('conventiona-commit-ai.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Conventiona Commit AI!');
-	});
+	// Comando para establecer la API key
+	context.subscriptions.push(
+		vscode.commands.registerCommand('conventiona-commit-ai.setOpenAiKey', async () => {
+			const apiKey = await vscode.window.showInputBox({
+				prompt: 'Ingresa tu API key de OpenAI'
+			});
 
-	context.subscriptions.push(disposable);
+			if (apiKey) {
+				await configService.updateOpenAIKey(apiKey);
+				vscode.window.showInformationMessage('OpenAI Key configurada exitosamente');
+			}
+		})
+	);
+
+	// Comando para eliminar la API key
+	context.subscriptions.push(
+		vscode.commands.registerCommand('conventiona-commit-ai.deleteOpenAiKey', async () => {
+			await configService.updateOpenAIKey(null);
+			vscode.window.showInformationMessage('OpenAI Key eliminada exitosamente');
+		})
+	);
+
+	// Comando para generar el mensaje de commit
+	context.subscriptions.push(
+		vscode.commands.registerCommand('conventiona-commit-ai.generateCommit', async () => {
+			if (!configService.getOpenAIKey()) {
+				const result = await vscode.window.showErrorMessage(
+					'No se ha configurado la API key de OpenAI',
+					'Configurar ahora'
+				);
+
+				if (result === 'Configurar ahora') {
+					await vscode.commands.executeCommand('conventiona-commit-ai.setOpenAiKey');
+				}
+				return;
+			}
+
+			await commitService.generateAndSetCommitMessage();
+		})
+	);
 }
-
-// This method is called when your extension is deactivated
-export function deactivate() {}
