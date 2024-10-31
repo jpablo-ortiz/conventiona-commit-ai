@@ -2,25 +2,18 @@ import * as vscode from 'vscode';
 import { DEFAULT_SYSTEM_PROMPT } from './constants';
 
 export class ConfigService {
-    private config: vscode.WorkspaceConfiguration;
     private static instance: ConfigService;
-
-    private constructor() {
-        this.config = vscode.workspace.getConfiguration('conventional-commit-ai');
+    
+    public get config() : vscode.WorkspaceConfiguration {
+        return vscode.workspace.getConfiguration('conventional-commit-ai');
     }
+    
 
     public static getInstance(): ConfigService {
         if (!ConfigService.instance) {
             ConfigService.instance = new ConfigService();
         }
         return ConfigService.instance;
-    }
-
-    /**
-     * Refresca la configuración
-     */
-    public refreshConfig(): void {
-        this.config = vscode.workspace.getConfiguration('conventional-commit-ai');
     }
 
     /**
@@ -63,7 +56,6 @@ export class ConfigService {
      */
     public async updateOpenAIKey(apiKey: string | null): Promise<void> {
         await this.config.update('openAiApiKey', apiKey, true);
-        this.refreshConfig();
     }
 
     /**
@@ -71,7 +63,6 @@ export class ConfigService {
      */
     public async updateOpenAIModel(model: string): Promise<void> {
         await this.config.update('openAiModel', model, true);
-        this.refreshConfig();
     }
 
     /**
@@ -79,7 +70,6 @@ export class ConfigService {
      */
     public async updateOpenAITemperature(temperature: number): Promise<void> {
         await this.config.update('openAiTemperature', temperature, true);
-        this.refreshConfig();
     }
 
     /**
@@ -87,7 +77,6 @@ export class ConfigService {
      */
     public async updateOpenAIMaxTokens(maxTokens: number): Promise<void> {
         await this.config.update('openAiMaxToken', maxTokens, true);
-        this.refreshConfig();
     }
 
     /**
@@ -95,6 +84,19 @@ export class ConfigService {
      */
     public async updateCustomPrompt(prompt: string): Promise<void> {
         await this.config.update('customSystemPrompt', prompt, true);
-        this.refreshConfig();
+    }
+
+    /**
+     * Obtiene el idioma configurado para los mensajes de commit
+     */
+    public getCommitLanguage(): string {
+        return this.config.get<string>('commitLanguage') || 'English';
+    }
+
+    /**
+     * Actualiza el idioma de los mensajes de commit
+     */
+    public async updateCommitLanguage(language: string): Promise<void> {
+        await this.config.update('commitLanguage', language, true);
     }
 } 

@@ -1,6 +1,9 @@
-# 🤖 Conventional Commit AI
-
-A VSCode extension that leverages AI to automatically generate commit messages following the [Conventional Commits](https://www.conventionalcommits.org/) standard.
+<div align="center">
+  <img src="https://i.ibb.co/jvPHRPb/icon.jpg" width="256" height="256" />
+  
+  # 🤖 Conventional Commit AI
+  A VSCode extension that leverages AI to automatically generate commit messages following the [Conventional Commits](https://www.conventionalcommits.org/) standard.
+</div>
 
 ## ✨ Features
 
@@ -25,9 +28,10 @@ A VSCode extension that leverages AI to automatically generate commit messages f
    - Enter your API key when prompted
 
 ## 🚀 Usage
+![Usage](https://i.ibb.co/tDZfp3q/usage.png)
 
 1. Stage your changes in Git
-2. Click the "Create Commit" button in the Source Control view
+2. Click the "Create Commit With AI" button in the Source Control view
 3. The extension will analyze your changes and generate a commit message
 4. Review and adjust the generated message if needed
 5. Commit as usual
@@ -43,6 +47,7 @@ Access settings through VSCode's settings (`Ctrl/Cmd + ,`):
 | `conventional-commit-ai.openAiTemperature` | Controls randomness (0-2) | `0.7` |
 | `conventional-commit-ai.openAiMaxToken` | Maximum tokens per request | `1000` |
 | `conventional-commit-ai.customPrompt` | Custom prompt for commit generation | `""` |
+| `conventional-commit-ai.commitLanguage` | Language for the commit messages (English, Español, Français) | `English` |
 
 ## 🔍 Commands
 
@@ -81,3 +86,6 @@ If you find this extension helpful, please consider:
 ---
 
 Made with ❤️ by [LomitoDev](https://github.com/LomitoDev)
+<!-- Para badges, usa proveedores confiables como shields.io -->
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
+![Version](https://img.shields.io/visual-studio-marketplace/v/tu-publisher.tu-extension)

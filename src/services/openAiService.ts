@@ -24,6 +24,7 @@ export class OpenAIService {
         const openai = new OpenAI({ apiKey });
 
         try {
+            const language = this.configService.getCommitLanguage();
             const customSystemPrompt = this.configService.getCustomSystemPrompt();
             const model = this.configService.getOpenAIModel();
             const temperature = this.configService.getOpenAITemperature();
@@ -39,7 +40,7 @@ export class OpenAIService {
             });
 
             this.logService.data('Mensajes para OpenAI', [
-                { role: 'system', content: customSystemPrompt },
+                { role: 'system', content: customSystemPrompt.replace('{language}', language) },
                 { role: 'user', content: EXAMPLE_DIFF_STYLE },
                 { role: 'assistant', content: EXAMPLE_COMMIT_MESSAGE_STYLE },
                 { role: 'user', content: EXAMPLE_DIFF_FEAT },
@@ -50,7 +51,7 @@ export class OpenAIService {
             const response = await openai.chat.completions.create({
                 model,
                 messages: [
-                    { role: 'system', content: customSystemPrompt },
+                    { role: 'system', content: customSystemPrompt.replace('{language}', language) },
                     { role: 'user', content: EXAMPLE_DIFF_STYLE },
                     { role: 'assistant', content: EXAMPLE_COMMIT_MESSAGE_STYLE },
                     { role: 'user', content: EXAMPLE_DIFF_FEAT },
