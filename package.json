@@ -2,14 +2,26 @@
   "name": "conventiona-commit-ai",
   "displayName": "Conventiona Commit AI",
   "description": "Conventional Commit AI es una extensión que usa inteligencia artificial generativa, como OpenAI, para crear mensajes de commit según el estándar Conventional Commits. Genera automáticamente mensajes claros y organizados, optimizando el flujo de trabajo de los desarrolladores.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "publisher": "LomitoDev",
+  "license": "MIT",
+  "icon": "media/icon.jpg",
   "engines": {
     "vscode": "^1.93.0"
   },
   "categories": [
+    "Machine Learning",
+    "SCM Providers",
     "Other"
   ],
+  "pricing": "Free",
+  "sponsor": {
+    "url": "https://github.com/jpablo-ortiz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jpablo-ortiz/conventiona-commit-ai.git"
+  },
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
@@ -24,10 +36,10 @@
       },
       {
         "command": "conventiona-commit-ai.generateCommit",
-        "title": "Create Commit",
+        "title": "Create Commit With AI",
         "icon": {
-          "light": "images/button_light.png",
-          "dark": "images/button_dark.png"
+          "light": "media/light_bulb.png",
+          "dark": "media/dark_bulb.png"
         }
       }
     ],
@@ -77,23 +89,6 @@
           "markdownDescription": "Language for the commit messages (English, Español, Français, Etc...)"
         }
       }
-    },
-    "viewsContainers": {
-      "activitybar": [
-        {
-          "id": "conventiona-commit-ai",
-          "title": "Conventional Commit AI",
-          "icon": "images/icon.svg"
-        }
-      ]
-    },
-    "views": {
-      "conventiona-commit-ai": [
-        {
-          "id": "conventiona-commit-ai-view",
-          "name": "Commit Message"
-        }
-      ]
     }
   },
   "scripts": {
@@ -117,6 +112,5 @@
   },
   "dependencies": {
     "openai": "^4.28.0"
-  },
-  "license": "MIT"
+  }
 }
