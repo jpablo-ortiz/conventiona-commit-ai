@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import OpenAI from 'openai';
 import { ConfigService } from './configService';
+import { LogService } from './logService';
 
 // Constantes
 // Style diff example
@@ -40,9 +41,11 @@ const EXAMPLE_COMMIT_MESSAGE_2 = `feat(user): add user creation functionality
 
 export class OpenAIService {
     private configService: ConfigService;
+    private logService: LogService;
 
     constructor() {
         this.configService = ConfigService.getInstance();
+        this.logService = LogService.getInstance();
     }
 
     /**
@@ -64,6 +67,21 @@ export class OpenAIService {
 
             const message = `Genera un mensaje de commit para los siguientes cambios:\n\n${diff}`;
 
+            // Loguear la configuración y el prompt
+            this.logService.data('Configuración OpenAI', {
+                model,
+                temperature,
+                maxTokens
+            });
+
+            this.logService.data('Mensajes para OpenAI', [
+                { role: 'system', content: customPrompt },
+                { role: 'user', content: EXAMPLE_DIFF },
+                { role: 'assistant', content: EXAMPLE_COMMIT_MESSAGE },
+                { role: 'user', content: EXAMPLE_DIFF_2 },
+                { role: 'assistant', content: EXAMPLE_COMMIT_MESSAGE_2 },
+                { role: 'user', content: message }
+            ]);
 
             const response = await openai.chat.completions.create({
                 model,
@@ -73,16 +91,15 @@ export class OpenAIService {
                     { role: 'assistant', content: EXAMPLE_COMMIT_MESSAGE },
                     { role: 'user', content: EXAMPLE_DIFF_2 },
                     { role: 'assistant', content: EXAMPLE_COMMIT_MESSAGE_2 },
-                    { 
-                        role: 'user', 
-                        content: message
-                    }
+                    { role: 'user', content: message }
                 ],
                 temperature,
                 max_tokens: maxTokens
             });
 
-            return response.choices[0]?.message?.content || '';
+            const generatedMessage = response.choices[0]?.message?.content || '';
+            this.logService.success(`Mensaje generado: ${generatedMessage}`);
+            return generatedMessage;
         } catch (error: unknown) {
             const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
             throw new Error(`Error al generar el mensaje de commit: ${errorMessage}`);

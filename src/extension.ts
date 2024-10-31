@@ -1,9 +1,11 @@
 import * as vscode from 'vscode';
 import { CommitService } from './services/commitService';
 import { ConfigService } from './services/configService';
+import { LogService } from './services/logService';
 
 export function activate(context: vscode.ExtensionContext) {
-	console.log('Conventional Commit AI is now active!');
+	const logService = LogService.getInstance();
+	logService.info('Conventional Commit AI is now active!');
 
 	const commitService = CommitService.getInstance();
 	const configService = ConfigService.getInstance();
