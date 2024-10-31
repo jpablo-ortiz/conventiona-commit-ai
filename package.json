@@ -19,10 +19,60 @@
         "title": "Set OpenAI Key"
       },
       {
-        "command": "conventiona-commit-ai.commit",
-        "title": "Create Commit"
+        "command": "conventiona-commit-ai.deleteOpenAiKey",
+        "title": "Delete OpenAI Key"
+      },
+      {
+        "command": "conventiona-commit-ai.generateCommit",
+        "title": "Create Commit",
+        "icon": {
+          "light": "images/button_light.png",
+          "dark": "images/button_dark.png"
+        }
       }
     ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "conventiona-commit-ai.generateCommit",
+          "when": "scmProvider == git",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Conventional Commit AI",
+      "properties": {
+        "conventional-commit-ai.openAiApiKey": {
+          "type": "string",
+          "default": null,
+          "markdownDescription": "Your OpenAI API key. You can get one [here](https://platform.openai.com/)."
+        },
+        "conventional-commit-ai.openAiMaxToken": {
+          "type": "number",
+          "default": 1000,
+          "minimum": 10,
+          "markdownDescription": "1,000 tokens is about 750 words. The [price](https://openai.com/pricing) per token is different for each model. **``1000`` is recommended**"
+        },
+        "conventional-commit-ai.openAiTemperature": {
+          "type": "number",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 2,
+          "markdownDescription": "Controls randomness: Lowering results in less random completions. As the temperature approaches zero, the model will become deterministic and repetitive. **``0.7`` is recommended**"
+        },
+        "conventional-commit-ai.openAiModel": {
+          "type": "string",
+          "default": "gpt-4o-mini",
+          "markdownDescription": "The model to use for generating commit messages. The [price](https://openai.com/pricing) per token is different for each model."
+        },
+        "conventiona-commit-ai.customPrompt": {
+          "type": "string",
+          "default": "Eres un programador senior encargado de generar mensajes de commit de Git de alta calidad que cumplan con los estándares de los 'conventional commits'. Tus commits deben ser concisos, informativos y reflejar claramente el propósito de los cambios en el código.\n# Directrices\n- Los mensajes de commit **deben seguir el formato**:\n- **Sin cuerpo**:\n```\n<type>(<scope>): <description>\n```\n- **Con cuerpo**:\n```\n<type>(<scope>): <description>\n<cuerpo opcional>\n```\n- Usa los siguientes tipos de commit:\n- `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`.\n- Asegúrate de que el **scope** se use adecuadamente para dar contexto cuando sea necesario.\n- La **descripción** debe tener menos de **50 caracteres** y transmitir el cambio claramente.\n- El **cuerpo** es opcional y debe usarse para proporcionar detalles adicionales si es necesario.\n- **Puedes agregar emojis**, pero de manera moderada.\n# Pasos\n1. Comprende el cambio exacto en el código.\n2. Identifica el **tipo** y el **scope** apropiados según las directrices.\n3. Escribe una **descripción concisa** del cambio.\n4. Si es necesario, incluye un **cuerpo** para explicar detalles adicionales.\n5. Asegúrate de que los commits sean informativos para futuros desarrolladores.\n6. Proporciona **solo el mensaje de commit** directamente, sin explicaciones adicionales.\n# Formato de Salida\nEl mensaje de commit debe seguir uno de estos formatos:\n- **Sin cuerpo**:\n```\n<type>(<scope>): <description>\n```\n- **Con cuerpo**:\n```\n<type>(<scope>): <description>\n<cuerpo opcional>\n```",
+          "markdownDescription": "Set a custom prompt describing the commit message format to generate."
+        }
+      }
+    },
     "viewsContainers": {
       "activitybar": [
         {
@@ -60,5 +110,8 @@
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1"
   },
-  "license": "LICENSE.txt"
+  "dependencies": {
+    "openai": "^4.28.0"
+  },
+  "license": "MIT"
 }
