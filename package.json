@@ -15,10 +15,31 @@
   "contributes": {
     "commands": [
       {
-        "command": "conventiona-commit-ai.helloWorld",
-        "title": "Hello World"
+        "command": "conventiona-commit-ai.setOpenAiKey",
+        "title": "Set OpenAI Key"
+      },
+      {
+        "command": "conventiona-commit-ai.commit",
+        "title": "Create Commit"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "conventiona-commit-ai",
+          "title": "Conventional Commit AI",
+          "icon": "images/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "conventiona-commit-ai": [
+        {
+          "id": "conventiona-commit-ai-view",
+          "name": "Commit Message"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
