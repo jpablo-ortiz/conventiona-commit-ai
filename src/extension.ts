@@ -16,10 +16,12 @@ export function activate(context: vscode.ExtensionContext) {
 			const apiKey = await vscode.window.showInputBox({
 				prompt: 'Ingresa tu API key de OpenAI'
 			});
-
+			
 			if (apiKey) {
 				await configService.updateOpenAIKey(apiKey);
 				vscode.window.showInformationMessage('OpenAI Key configurada exitosamente');
+			} else {
+				vscode.window.showErrorMessage('No se ha configurado la API key de OpenAI, por favor intentelo ingresando a Configuración > Extensiones > Conventional Commit AI > Open Ai Api Key');
 			}
 		})
 	);
@@ -42,6 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
 				);
 
 				if (result === 'Configurar ahora') {
+					await vscode.window.showInformationMessage("Si al poner la API key de OpenAI, no funciona, por favor intentelo ingresando a Configuración > Extensiones > Conventional Commit AI > Open Ai Api Key");
 					await vscode.commands.executeCommand('conventiona-commit-ai.setOpenAiKey');
 				}
 				return;
